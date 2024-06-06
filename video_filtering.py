@@ -39,7 +39,9 @@ save_frame_range_sec('exvideo.mp4',
 
 folder = "images"
 
-
+for images in os.listdir(folder):
+    for image in images:
+        cv2.imwrite("image", image)
     
 
 
