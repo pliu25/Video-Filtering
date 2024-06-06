@@ -39,7 +39,7 @@ save_frame_range_sec('exvideo.mp4',
 
 folder = "images"
 
-for image in os.listdir(folder):
+
     
 
 
