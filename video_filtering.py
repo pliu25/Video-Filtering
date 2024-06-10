@@ -1,6 +1,7 @@
 import cv2
 import os
 from os import listdir
+import numpy as np 
 
 def save_frame_range_sec(video_path, start_sec, stop_sec, step_sec,
                          dir_path, basename, ext='jpg'):
@@ -37,11 +38,32 @@ save_frame_range_sec('exvideo.mp4',
                      0, 11, 1/24,
                      'images', 'sample_video_img')
 
-folder = "images"
+def pixelate_rgb(img, window):
+    n, m, _ = img.shape
+    n, m = n - n % window, m - m % window
+    img1 = np.zeros((n, m, 3))
+    for x in range(0, n, window):
+        for y in range(0, m, window):
+            img1[x:x+window,y:y+window] = img[x:x+window,y:y+window].mean(axis=(0,1))
+    return img1
 
-for images in os.listdir(folder):
-    for image in images:
-        cv2.imwrite("image", image)
+inPath = "images"
+outPath = "filtered_images"
+
+for imagePath in os.listdir(inPath):
+    with open(os.path.join(inPath, imagePath)) as f:
+        print(cv2.imread(f"images/{imagePath}"))
+        for imagePath in cv2.imread(f"images/{imagePath}"):
+            pixelate_rgb(imagePath, 20)
+            print(imagePath)
+
+
+#https://stackoverflow.com/questions/47143332/how-to-pixelate-a-square-image-to-256-big-pixels-with-python
+
+   
+
+
+
     
 
 
