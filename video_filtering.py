@@ -40,6 +40,7 @@ save_frame_range_sec('exvideo.mp4',
 
 def pixelate_rgb(img, window):
     n, m, _ = img.shape
+    print(img.shape)
     n, m = n - n % window, m - m % window
     img1 = np.zeros((n, m, 3))
     for x in range(0, n, window):
@@ -56,6 +57,7 @@ for imagePath in os.listdir(inPath):
         for imagePath in cv2.imread(f"images/{imagePath}"):
             pixelate_rgb(imagePath, 20)
             print(imagePath)
+            #go through every nine pixel boxes 
 
 
 #https://stackoverflow.com/questions/47143332/how-to-pixelate-a-square-image-to-256-big-pixels-with-python
