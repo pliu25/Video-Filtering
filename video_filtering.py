@@ -64,7 +64,7 @@ def pixelate(img: list) -> list:
                     blue+=pixel[pixel_c][0]
                     green+=pixel[pixel_r][pixel_c][1]
                     red+=pixel[pixel_r][pixel_c][2]
-            img[r][c][0] = blue/9 
+            img[r][c][0] = blue/9 #math.trunc
             img[r][c][1] = green/9 
             img[r][c][2] = red/9 
     return img
