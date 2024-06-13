@@ -22,13 +22,14 @@ frame = cv2.imread(os.path.join(mod_images, images[0]))
 #print(frame)
 size = frame.shape[1], frame.shape[0]
 
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+fourcc = cv2.VideoWriter_fourcc(*'XVID')
 video = cv2.VideoWriter(video_name, fourcc, 24, size)
 
 for image in images:
     video.write(cv2.imread(os.path.join(mod_images, image)))
     print(cv2.imread(os.path.join(mod_images, image)))
 
+video.release()
 
 def save_frame_range_sec(video_path, start_sec, stop_sec, step_sec,
                          dir_path, basename, ext='jpg'):
@@ -250,7 +251,7 @@ for imagePath in os.listdir(inPath):
 #     print("x")
 
 cv2.destroyAllWindows()
-video.release()
+#video.release()
 
 
 
