@@ -4,6 +4,32 @@ from os import listdir
 import numpy as np 
 import math
 
+
+mod_images = 'filtered_images'
+video_name = 'filtered_video.mp4'
+#print(os.listdir(mod_images))
+# mod_images_list = []
+# for image in os.listdir(mod_images):
+#     mod_images_list.append(image)
+#print(mod_images_list)
+dir = os.listdir(mod_images)
+dir.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
+print(dir)
+
+images = [img for img in dir if img.endswith(".jpg")]
+print("images", images)
+frame = cv2.imread(os.path.join(mod_images, images[0]))
+#print(frame)
+size = frame.shape[1], frame.shape[0]
+
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+video = cv2.VideoWriter(video_name, fourcc, 24, size)
+
+for image in images:
+    video.write(cv2.imread(os.path.join(mod_images, image)))
+    print(cv2.imread(os.path.join(mod_images, image)))
+
+
 def save_frame_range_sec(video_path, start_sec, stop_sec, step_sec,
                          dir_path, basename, ext='jpg'):
     cap = cv2.VideoCapture(video_path)
@@ -208,31 +234,23 @@ for imagePath in os.listdir(inPath):
 
 
 
-mod_images = 'filtered_images'
-video_name = 'filtered_video.mp4'
 
-mod_images_list = []
-for image in os.listdir(mod_images):
-    mod_images_list.append(image)
-print(mod_images_list)
-mod_images_list.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
-print(mod_images_list)
 #print(sorted(os.listdir(mod_images)))
 
-images = [mod_images_list]
-#print(images)
-frame = cv2.imread(os.path.join(mod_images, images[0]))
-size = images[0].shape[1], images[0].shape[0]
+# images = [mod_images_list]
+# #print(images)
+# frame = cv2.imread(os.path.join(mod_images, images[0]))
+# size = images[0].shape[1], images[0].shape[0]
 
-fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-video = cv2.VideoWriter(video_name, fourcc, 24, size)
+# fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+# video = cv2.VideoWriter(video_name, fourcc, 24, size)
 
-for image in range(len(images)):
-    video.write(images[image])
-    print("x")
+# for image in range(len(images)):
+#     video.write(images[image])
+#     print("x")
 
 cv2.destroyAllWindows()
-video.close()
+video.release()
 
 
 
