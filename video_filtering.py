@@ -129,7 +129,7 @@ def pixelate(img: list) -> list:
     #print("img", img)
     return img
 #cv2.imwrite(cv2.imread(f"images/sample_video_img_000_0.00.jpg"), pixelate(cv2.imread(f"images/sample_video_img_000_0.00.jpg")))
-print(pixelate(cv2.imread(f"images/sample_video_img_000_0.00.jpg")))
+#print(pixelate(cv2.imread(f"images/sample_video_img_000_0.00.jpg")))
 #print((cv2.imread(f"images/sample_video_img_000_0.00.jpg"))[0][0][0])
 
 
@@ -154,7 +154,7 @@ for imagePath in os.listdir(inPath):
 
     # cv2.imwrite(path ,src)
     
-    cv2.imwrite(os.path.join(outPath, 'mod_image' + str(imagePath) + '.jpg'), pixelate(cv2.imread(f"images/{imagePath}")))
+    cv2.imwrite(os.path.join(outPath, str(imagePath[17]) + str(imagePath[18]) + str(imagePath[19]) + '.jpg'), pixelate(cv2.imread(f"images/{imagePath}")))
     #cv2.imwrite(os.path.join)
     #**save_image(pixelate(cv2.imread(f"images/{imagePath}")), outPath, "modified_image.jpg")
     # with open(os.path.join(inPath, imagePath)) as f:
@@ -177,33 +177,33 @@ for imagePath in os.listdir(inPath):
             #print("imagePath", imagePath)
             #go through every nine pixel boxes 
 
-def get_file_key(filename):
-    # Remove all non-digits from the filename
-    key=str(filename[26])+str(filename[27])+str(filename[28])
-    #key = re.sub("[^0-9]", "", filename)
-    return int(key)
+# def get_file_key(filename):
+#     # Remove all non-digits from the filename
+#     key=str(filename[26])+str(filename[27])+str(filename[28])
+#     #key = re.sub("[^0-9]", "", filename)
+#     return int(key)
 
-def sort_filenames(all_files):
-    filenames_sorted = []
-    original_filenames = {}
-    for full_filename in all_files:
-        filename, file_extension = os.path.splitext(full_filename)
+# def sort_filenames(all_files):
+#     filenames_sorted = []
+#     original_filenames = {}
+#     for full_filename in all_files:
+#         filename, file_extension = os.path.splitext(full_filename)
 
-        # Save all the files names to be sorted
-        filenames_sorted.append(filename)
-        # Save original full filename in a dictionary for later retrieval
-        original_filenames[filename] = full_filename
+#         # Save all the files names to be sorted
+#         filenames_sorted.append(filename)
+#         # Save original full filename in a dictionary for later retrieval
+#         original_filenames[filename] = full_filename
 
-    # Sort the list using our own key
-    filenames_sorted.sort(key=get_file_key)
-    filenames = []
-    for key in filenames_sorted:
-        filenames.append(original_filenames[key])
+#     # Sort the list using our own key
+#     filenames_sorted.sort(key=get_file_key)
+#     filenames = []
+#     for key in filenames_sorted:
+#         filenames.append(original_filenames[key])
 
-    #print(filenames)
-    return filenames
+#     #print(filenames)
+#     return filenames
 
-#sort_filenames("filtered_images")
+# #sort_filenames("filtered_images")
 
 
 
@@ -211,9 +211,16 @@ def sort_filenames(all_files):
 mod_images = 'filtered_images'
 video_name = 'filtered_video.mp4'
 
-print(sorted(os.listdir(mod_images)))
+mod_images_list = []
+for image in os.listdir(mod_images):
+    mod_images_list.append(image)
+print(mod_images_list)
+mod_images_list.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
+print(mod_images_list)
+#print(sorted(os.listdir(mod_images)))
 
-images = [img for img in sorted([img for img in os.listdir(mod_images)])]
+images = [mod_images_list]
+#print(images)
 frame = cv2.imread(os.path.join(mod_images, images[0]))
 size = images[0].shape[1], images[0].shape[0]
 
