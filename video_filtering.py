@@ -129,21 +129,20 @@ def pixelate(img: list) -> list:
     #print("img", img)
     return img
 #cv2.imwrite(cv2.imread(f"images/sample_video_img_000_0.00.jpg"), pixelate(cv2.imread(f"images/sample_video_img_000_0.00.jpg")))
-#print(pixelate(cv2.imread(f"images/sample_video_img_000_0.00.jpg")))
+print(pixelate(cv2.imread(f"images/sample_video_img_000_0.00.jpg")))
 #print((cv2.imread(f"images/sample_video_img_000_0.00.jpg"))[0][0][0])
-def save_image(image, directory, filename):
-    """
-    Save an image to a new directory
-    """
-    cv2.imwrite(os.path.join(directory, filename), image)
+
+
 
 
 inPath = "images"
 outPath = "filtered_images"
 
+
 for imagePath in os.listdir(inPath):
     #print("imagePath", pixelate(cv2.imread(f"images/{imagePath}")))
     mod_image = pixelate(cv2.imread(f"images/{imagePath}"))
+
     #os.path.join(outPath, mod_image)
     # filesplit = os.path.split(imagePath)
     # file_name = os.path.splitext(filesplit[1])[0]
@@ -178,21 +177,56 @@ for imagePath in os.listdir(inPath):
             #print("imagePath", imagePath)
             #go through every nine pixel boxes 
 
+def get_file_key(filename):
+    # Remove all non-digits from the filename
+    key=str(filename[26])+str(filename[27])+str(filename[28])
+    #key = re.sub("[^0-9]", "", filename)
+    return int(key)
+
+def sort_filenames(all_files):
+    filenames_sorted = []
+    original_filenames = {}
+    for full_filename in all_files:
+        filename, file_extension = os.path.splitext(full_filename)
+
+        # Save all the files names to be sorted
+        filenames_sorted.append(filename)
+        # Save original full filename in a dictionary for later retrieval
+        original_filenames[filename] = full_filename
+
+    # Sort the list using our own key
+    filenames_sorted.sort(key=get_file_key)
+    filenames = []
+    for key in filenames_sorted:
+        filenames.append(original_filenames[key])
+
+    #print(filenames)
+    return filenames
+
+#sort_filenames("filtered_images")
+
+
+
+
 mod_images = 'filtered_images'
 video_name = 'filtered_video.mp4'
 
-images = [img for img in os.listdir(mod_images) if img.endswith(".jpg")]
+print(sorted(os.listdir(mod_images)))
+
+images = [img for img in sorted([img for img in os.listdir(mod_images)])]
 frame = cv2.imread(os.path.join(mod_images, images[0]))
-height, width, layers = frame.shape
+size = images[0].shape[1], images[0].shape[0]
 
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-video = cv2.VideoWriter(video_name, fourcc, 24, (width,height))
+video = cv2.VideoWriter(video_name, fourcc, 24, size)
 
-for image in images:
-    video.write(cv2.imread(os.path.join(mod_images, image)))
+for image in range(len(images)):
+    video.write(images[image])
+    print("x")
 
 cv2.destroyAllWindows()
-video.release()
+video.close()
+
 
 
 
